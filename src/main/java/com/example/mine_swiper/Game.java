@@ -1,5 +1,7 @@
 package com.example.mine_swiper;
 
+import com.example.mine_swiper.Controllers.GameFiledController;
+import com.example.mine_swiper.Scene.GameField;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -11,14 +13,19 @@ import java.nio.file.FileSystem;
 import java.util.Properties;
 
 public class Game extends Application {
-    private int HEIGHT = 600;
-    private int WIDTH = 600;
-    private int difficulty;
+    private static int HEIGHT = 600;
+    private static int WIDTH = 600;
+
+    private static int difficulty = 10;
+    public static int getDifficulty() {
+        return difficulty;
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
         loadSettings();
-        Pane root = new Pane();
-        Scene scene = new Scene(root,WIDTH,HEIGHT);
+        GameField root = new GameField(WIDTH,HEIGHT);
+        Scene scene = new Scene(root);
         stage.setTitle("Mine Swiper");
         stage.setScene(scene);
         stage.show();
@@ -35,6 +42,7 @@ public class Game extends Application {
             OutputStream outputStream = new FileOutputStream(file);
             properties.setProperty("height",String.valueOf(HEIGHT));
             properties.setProperty("width",String.valueOf(WIDTH));
+            properties.setProperty("difficulty",String.valueOf(difficulty));
             properties.store(outputStream,null);
             outputStream.close();
         }
@@ -43,6 +51,7 @@ public class Game extends Application {
             properties.load(inputStream);
             HEIGHT = Integer.parseInt(properties.getProperty("height").trim());
             WIDTH = Integer.parseInt(properties.getProperty("width").trim());
+            difficulty = Integer.parseInt(properties.getProperty("difficulty").trim());
             inputStream.close();
         }
     }
