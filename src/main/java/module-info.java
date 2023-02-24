@@ -6,4 +6,6 @@ module com.example.mine_swiper {
 
     opens com.example.mine_swiper to javafx.fxml;
     exports com.example.mine_swiper;
+    exports com.example.mine_swiper.Scene;
+    opens com.example.mine_swiper.Scene to javafx.fxml;
 }

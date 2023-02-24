@@ -1,4 +1,4 @@
-package com.example.mine_swiper;
+package com.example.mine_swiper.Scene;
 
 import javafx.scene.input.MouseButton;
 

@@ -1,18 +1,17 @@
 package com.example.mine_swiper;
 
-import com.example.mine_swiper.Controllers.GameFiledController;
+import com.example.mine_swiper.Controllers.MouseObserver;
 import com.example.mine_swiper.Scene.GameField;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
-import java.nio.file.FileSystem;
 import java.util.Properties;
 
 public class Game extends Application {
+    public static GameField gameField;
     private static int HEIGHT = 600;
     private static int WIDTH = 600;
 
@@ -24,8 +23,9 @@ public class Game extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         loadSettings();
-        GameField root = new GameField(WIDTH,HEIGHT);
-        Scene scene = new Scene(root);
+        gameField = new GameField(WIDTH,HEIGHT);
+        MouseObserver.addClickable(gameField.getClickable());
+        Scene scene = new Scene(gameField);
         stage.setTitle("Mine Swiper");
         stage.setScene(scene);
         stage.show();
