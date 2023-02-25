@@ -1,9 +1,13 @@
 package com.example.mine_swiper;
 
+import com.example.mine_swiper.Controllers.KeyboardObserver;
 import com.example.mine_swiper.Controllers.MouseObserver;
 import com.example.mine_swiper.Scene.GameField;
+import com.example.mine_swiper.Scene.MenuLeyout.Menu;
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
@@ -11,24 +15,29 @@ import java.io.*;
 import java.util.Properties;
 
 public class Game extends Application {
+    public static Game game;
     public static GameField gameField;
+    private Group root;
     private static int HEIGHT = 600;
     private static int WIDTH = 600;
 
     private static int difficulty = 10;
+    private Menu menu;
     public static int getDifficulty() {
         return difficulty;
     }
 
     @Override
     public void start(Stage stage) throws Exception {
+        game = this;
         loadSettings();
-        gameField = new GameField(WIDTH,HEIGHT);
-        MouseObserver.addClickable(gameField.getClickable());
-        Scene scene = new Scene(gameField);
+        root = new Group();
+        Scene scene = new Scene(root);
+        KeyboardObserver.addHandler(scene);
         stage.setTitle("Mine Swiper");
         stage.setScene(scene);
         stage.show();
+        newGame();
     }
     private void loadSettings() throws IOException {
         JFileChooser fc = new JFileChooser();
@@ -55,8 +64,26 @@ public class Game extends Application {
             inputStream.close();
         }
     }
-    private void createGrid(){
-
+    public void menu(){
+        if(menu == null) {
+            menu = new Menu(WIDTH,HEIGHT);
+            root.getChildren().add(menu);
+        }
+        else {
+            root.getChildren().remove(menu);
+            menu.close();
+            menu = null;
+        }
+    }
+    public void newGame(){
+        if(gameField != null){
+            MouseObserver.removeClickableList(gameField.getClickable());
+            root.getChildren().remove(gameField);
+            menu();
+        }
+        gameField = new GameField(WIDTH,HEIGHT);
+        root.getChildren().add(gameField);
+        MouseObserver.addClickableList(gameField.getClickable());
     }
 
 }

@@ -1,9 +1,7 @@
 package com.example.mine_swiper.Controllers;
 
 import com.example.mine_swiper.Scene.Clickable;
-import com.example.mine_swiper.Scene.GameField;
 
-import com.example.mine_swiper.Scene.GameObjects.Cell;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
@@ -13,11 +11,21 @@ import java.util.List;
 
 public class MouseObserver {
 
-    public static void addClickable(List<Clickable> nodes){
+    public static void addClickableList(List<Clickable> nodes){
         for(Clickable clickable:nodes) {
-            if(!(clickable instanceof Node)) continue;
-            ((Node)clickable).addEventFilter(MouseEvent.ANY,event->mouseEvent(event));
+            addClickableElement(clickable);
         }
+    }
+    public static void addClickableElement(Clickable clickable){
+        if(!(clickable instanceof Node)) return;
+        ((Node) clickable).addEventFilter(MouseEvent.ANY,event->mouseEvent(event));
+    }
+    public static void removeClickableElement(Clickable clickable){
+        if(!(clickable instanceof Node)) return;
+        ((Node)clickable).removeEventFilter(MouseEvent.ANY,event->mouseEvent(event));
+    }
+    public static void removeClickableList(List<Clickable> nodes){
+        for(Clickable clickable:nodes) removeClickableElement(clickable);
     }
 
     public static void mouseEvent(MouseEvent event){
